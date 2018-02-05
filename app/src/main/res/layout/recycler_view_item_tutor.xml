@@ -14,7 +14,7 @@
         android:layout_weight="6">
 
         <ImageView
-            android:id="@+id/image_view_group"
+            android:id="@+id/image_view_teachingClass"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="false"

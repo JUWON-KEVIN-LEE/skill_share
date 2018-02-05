@@ -3,6 +3,7 @@ package com.immymemine.kevin.skillshare.network.api;
 import com.immymemine.kevin.skillshare.model.group.Group;
 import com.immymemine.kevin.skillshare.model.m_class.Tutor;
 import com.immymemine.kevin.skillshare.model.user.Following;
+import com.immymemine.kevin.skillshare.model.user.SubscribedClass;
 import com.immymemine.kevin.skillshare.model.user.User;
 import com.immymemine.kevin.skillshare.network.Response;
 import com.immymemine.kevin.skillshare.network.user.SignUpRequestBody;
@@ -14,6 +15,7 @@ import java.util.List;
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
@@ -65,6 +67,11 @@ public interface UserService {
 
     @POST("user/setNickname")
     Observable<Response> setNickname(@Query("userId") String userId, @Query("nickname") String nickname);
+
+    @POST("user/DeletesubscribedClass")
+    Observable<SubscribeResponse> deleteSubscribeClass(@Query("userId") String userId, @Body List<SubscribedClass> deleteSubscribeClass);
+
+//    @GET("user/downloadVideo/{}")
 
     //    @PUT("user/imageUrl/{userId}/{imageUrl}")
 //    Observable<User> putImageUrl(@Path("userId") String userId, @Path("imageUrl") String imageUrl);

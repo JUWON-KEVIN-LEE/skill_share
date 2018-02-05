@@ -1,11 +1,13 @@
 package com.immymemine.kevin.skillshare.network.api;
 
+import com.immymemine.kevin.skillshare.model.home.Class;
 import com.immymemine.kevin.skillshare.model.m_class.Reply;
 import com.immymemine.kevin.skillshare.model.m_class.Subscriber;
 import com.immymemine.kevin.skillshare.model.see_all.Project;
 import com.immymemine.kevin.skillshare.model.see_all.Review;
 
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
@@ -30,4 +32,7 @@ public interface SeeAllService {
 
     @POST("discussions/addReply")
     Observable<List<Reply>> addReply(@Body Reply reply, @Query("discussionId") String discussionId);
+
+    @GET("seeAll/homeItem/{category}")
+    Observable<Map<String, List<Class>>> getSeeAllHome(@Path("category") String category);
 }

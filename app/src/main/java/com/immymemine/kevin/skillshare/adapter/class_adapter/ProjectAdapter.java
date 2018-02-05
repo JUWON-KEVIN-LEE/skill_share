@@ -64,8 +64,8 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ProjectH
             Project project = projects.get(position);
             holder.projectId = project.get_id();
 
-            if(project.getImageUrl() != null) {
-                Glide.with(context).load(project.getImageUrl())
+            if(project.getProjectPictureUrl() != null) {
+                Glide.with(context).load(project.getProjectPictureUrl())
                         .apply(RequestOptions.centerCropTransform())
                         .into(holder.projectImageView);
             }

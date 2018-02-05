@@ -22,6 +22,9 @@ import retrofit2.http.Query;
 
 public interface ClassService {
 
+    @GET("class/{id}")
+    Observable<Lessons> getVideo(@Path("id") String id);
+
     @GET("class/lessons/{id}")
     Observable<Lessons> getLessons(@Path("id") String id);
 
@@ -42,4 +45,6 @@ public interface ClassService {
 
     @GET("class/search/{content}")
     Observable<List<SearchClass>> search(@Path("content") String searchContent);
+
+
 }

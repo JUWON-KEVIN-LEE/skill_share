@@ -29,6 +29,11 @@ public class ProjectSeeAllRecyclerViewAdapter extends RecyclerView.Adapter<Proje
         this.projects = projects;
     }
 
+    public void update(List<Project> projects){
+        this.projects = projects;
+        notifyDataSetChanged();
+    }
+
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.recycler_view_item_see_all_projects, parent, false);

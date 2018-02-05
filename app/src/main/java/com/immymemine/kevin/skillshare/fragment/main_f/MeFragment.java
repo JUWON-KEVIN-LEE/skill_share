@@ -87,8 +87,13 @@ public class MeFragment extends Fragment {
 
         initiateView(meFragment);
 
+//        Glide.with(context)
+//                .load("https://static.skillshare.com/uploads/video/thumbnails/562151dcbe554d7341678c16c8d07f6c/448-252")
+//                .apply(RequestOptions.circleCropTransform())
+//                .into(meImage);
+
         if (user.getImageUrl() != null) {
-            String imageUrl = RetrofitHelper.BASE_URL+user.getImageUrl();
+            String imageUrl = RetrofitHelper.BASE_URL + user.getImageUrl();
 
             Glide.with(context)
                     .load(imageUrl)
@@ -107,7 +112,7 @@ public class MeFragment extends Fragment {
         layoutManager.setFlexDirection(FlexDirection.ROW);
         recyclerViewSkills.setLayoutManager(layoutManager);
 
-        if(user.getFollowingSkills() != null) {
+        if (user.getFollowingSkills() != null) {
             adapter = new SkillsRecyclerViewAdapter(context, user.getFollowingSkills());
             recyclerViewSkills.setAdapter(adapter);
         } else {
@@ -170,7 +175,7 @@ public class MeFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         (Response response) -> {
-                            if(ConstantUtil.FAILURE.equals(response.getResult())) {
+                            if (ConstantUtil.FAILURE.equals(response.getResult())) {
                                 // TODO SHOW ERROR PAGE
                             }
                         }, (Throwable error) -> {
@@ -190,13 +195,13 @@ public class MeFragment extends Fragment {
     private String getPathFromUri(Uri uri) {
         try (
                 Cursor cursor =
-                     context.getContentResolver().query(uri, new String[]{MediaStore.Images.Media.DATA},
-                             null, null, null)
+                        context.getContentResolver().query(uri, new String[]{MediaStore.Images.Media.DATA},
+                                null, null, null)
         ) {
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();
             return cursor.getString(column_index);
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -205,8 +210,8 @@ public class MeFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK) {
-            if(requestCode == ConstantUtil.SELECT_SKILLS_REQUEST_CODE ) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == ConstantUtil.SELECT_SKILLS_REQUEST_CODE) {
                 List<String> skills = data.getStringArrayListExtra(ConstantUtil.SKILLS_FLAG);
 
                 RetrofitHelper.createApi(UserService.class)
@@ -215,7 +220,7 @@ public class MeFragment extends Fragment {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 (Response response) -> {
-                                    if(ConstantUtil.SUCCESS.equals(response.getResult())) {
+                                    if (ConstantUtil.SUCCESS.equals(response.getResult())) {
                                         user.setFollowingSkills(skills);
                                         adapter.update(user.getFollowingSkills());
                                     }
@@ -224,7 +229,7 @@ public class MeFragment extends Fragment {
                                 }
                         );
             } else if (requestCode == ConstantUtil.GALLERY_REQUEST_CODE) {
-                if(data != null && data.getData() != null) {
+                if (data != null && data.getData() != null) {
                     Uri imageUri = data.getData();
                     String imagePath = getPathFromUri(imageUri);
 
@@ -232,6 +237,7 @@ public class MeFragment extends Fragment {
                             .load(new File(imagePath))
                             .apply(RequestOptions.circleCropTransform())
                             .into(meImage);
+
 
                     uploadImageFile(imagePath);
                 }

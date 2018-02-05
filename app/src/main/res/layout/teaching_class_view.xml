@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="30dp"
-        android:text="Skills You Follow"
+        android:text="Teaching Class"
         android:textColor="@android:color/black"
         android:textSize="20sp" />
 
@@ -22,17 +22,16 @@
         android:layout_marginRight="16dp"
         android:layout_marginTop="18dp"
         android:background="@android:color/transparent"
-        android:text="Personalize"
+        android:text="@string/see_all"
         android:textColor="@color/IcActive" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view_skills"
+        android:id="@+id/recycler_view_teachingClass"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/button_view_seeAll"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        tools:listitem="@layout/recycler_view_item_skills">
+        android:layout_marginTop="8dp">
 
     </android.support.v7.widget.RecyclerView>
 

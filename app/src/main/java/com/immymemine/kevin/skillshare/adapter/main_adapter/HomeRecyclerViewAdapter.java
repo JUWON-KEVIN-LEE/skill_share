@@ -15,6 +15,8 @@ import com.immymemine.kevin.skillshare.activity.SeeAllActivity;
 import com.immymemine.kevin.skillshare.model.home.Class;
 import com.immymemine.kevin.skillshare.utility.ConstantUtil;
 
+import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +28,8 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
 
     Context context;
     List<Map<String, List<Class>>> classes;
+    Map<String, List<Class>> map;
+
 
     public HomeRecyclerViewAdapter(Context context) {
         this.context = context;
@@ -44,13 +48,15 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
 
     @Override
     public void onBindViewHolder(Holder holder, int position) {
-        Map<String, List<Class>> map = classes.get(position);
+        map = classes.get(position);
 
         for (String title : map.keySet()) {
             holder.textViewTitle.setText(title);
             holder.generalRecyclerView.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
             holder.generalRecyclerView.setAdapter(new GeneralRecyclerViewAdapter(context, map.get(title)));
+
         }
+
     }
 
     @Override
@@ -70,10 +76,13 @@ public class HomeRecyclerViewAdapter extends RecyclerView.Adapter<HomeRecyclerVi
             textViewTitle = view.findViewById(R.id.text_view_title);
             generalRecyclerView = view.findViewById(R.id.general_recycler_view);
             buttonSeeAll = view.findViewById(R.id.button_see_all);
+
             buttonSeeAll.setOnClickListener(
                     v -> {
+
                         Intent intent = new Intent(context, SeeAllActivity.class);
-                        intent.putExtra(ConstantUtil.TYPE_FLAG, textViewTitle.getText().toString());
+                        intent.putExtra(ConstantUtil.SEE_ALL_FLAG, ConstantUtil.CLASS_ITEM);
+                        intent.putExtra(ConstantUtil.TOOLBAR_TITLE_FLAG, textViewTitle.getText().toString()); // map 형식을 seeAll로 보내면, seeAll에서 해당 맵에 대한 정보를 받아 recyclerView로 세팅함.
                         context.startActivity(intent);
                     }
             );

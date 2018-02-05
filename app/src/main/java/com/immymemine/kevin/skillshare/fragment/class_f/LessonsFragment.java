@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +60,10 @@ public class LessonsFragment extends Fragment {
     // follow button
     int followers;
 
+    Tutor tutor;
+    String tutorId;
+    String classId;
+
     public LessonsFragment() {
         // Required empty public constructor
     }
@@ -71,8 +76,10 @@ public class LessonsFragment extends Fragment {
 
         initiateView(view);
 
+        classId = getArguments().getString(ConstantUtil.ID_FLAG);
+
         RetrofitHelper.createApi(ClassService.class)
-                .getLessons(getArguments().getString(ConstantUtil.ID_FLAG))
+                .getLessons(classId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::handleResponse, this::handleError);
@@ -95,6 +102,10 @@ public class LessonsFragment extends Fragment {
         imageViewTutor = v.findViewById(R.id.image_view_group);
         imageViewTutor.setOnClickListener(view -> {
             Intent intent = new Intent(context, ProfileActivity.class);
+
+//            intent.putExtra(ConstantUtil.TUTOR_CHECK, tutorId);
+
+            intent.putExtra(ConstantUtil.USER_ID_FLAG, tutorId);
             startActivity(intent);
         });
 
@@ -110,22 +121,25 @@ public class LessonsFragment extends Fragment {
         recyclerViewLessons.setAdapter(adapter);
     }
 
-    Tutor tutor;
+
     private void handleResponse(Lessons lessons) {
         // class 정보
         textViewTitle.setText(lessons.getTitle());
         textViewTime.setText(TimeUtil.calculateVideoTime(lessons.getTotalDuration()));
-        textViewReview.setText(lessons.getReviewPercent()+"%");
+        textViewReview.setText(lessons.getReviewPercent() + "%");
 
         textViewSubscriberCount.setText(lessons.getSubscriberCount());
 
         // tutor 정보
         tutor = lessons.getTutor();
-        String tutorId = tutor.getTutorId();
-        if(StateUtil.getInstance().getState()) {
+        tutorId = tutor.getTutorId();
+
+
+
+        if (StateUtil.getInstance().getState()) {
             List<Following> followings = StateUtil.getInstance().getUserInstance().getFollowing();
-            for(Following following : followings) {
-                if(following.getUserId().equals(tutorId)) {
+            for (Following following : followings) {
+                if (following.getUserId().equals(tutorId)) {
                     buttonFollow.setChecked(true);
                     buttonFollow.setTextColor(getResources().getColor(R.color.white));
                     break;
@@ -145,6 +159,7 @@ public class LessonsFragment extends Fragment {
 
                 textViewFollowersCount.setText(followers + " Followers");
             });
+
         } else {
             buttonFollow.setOnCheckedChangeListener((buttonView, isChecked) ->
                     {
@@ -184,8 +199,8 @@ public class LessonsFragment extends Fragment {
                         (Following following) -> {
                             List<Following> followings = user.getFollowing();
 
-                            if(followings.contains(following)) {
-                                followings.remove(following);
+                            if (followings.contains(following)) {
+                                followings.remove(following); //?
                             } else {
                                 followings.add(following);
                             }

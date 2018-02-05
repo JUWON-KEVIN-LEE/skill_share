@@ -2,6 +2,7 @@ package com.immymemine.kevin.skillshare.adapter.see_all_adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.immymemine.kevin.skillshare.R;
 import com.immymemine.kevin.skillshare.model.m_class.Reply;
+import com.immymemine.kevin.skillshare.model.user.User;
+import com.immymemine.kevin.skillshare.network.RetrofitHelper;
 import com.immymemine.kevin.skillshare.utility.TimeUtil;
 import com.immymemine.kevin.skillshare.view.ExpandableTextView;
 
@@ -25,6 +28,7 @@ public class DiscussionSeeAllRecyclerViewAdapter extends RecyclerView.Adapter<Di
 
     Context context;
     List<Reply> replies;
+
     public DiscussionSeeAllRecyclerViewAdapter(Context context, List<Reply> replies) {
         this.context = context;
         this.replies = replies;
@@ -43,15 +47,20 @@ public class DiscussionSeeAllRecyclerViewAdapter extends RecyclerView.Adapter<Di
 
     @Override
     public void onBindViewHolder(Holder holder, int position) {
-        if(position == 0) {
-            holder.holder.setBackground(context.getResources().getDrawable(R.drawable.reply_boundary));
-        }
         Reply reply = replies.get(position);
-        if(reply.getImageUrl() != null) {
-            Glide.with(context).load(reply.getImageUrl())
+
+        Log.e("reply","check position ===="+replies.get(position).getImageUrl());
+
+        if (position == 0) {
+            holder.holder.setBackground(context.getResources().getDrawable(R.drawable.reply_boundary));
+
+        }
+//
+//        if (reply.getImageUrl() != null) {
+            Glide.with(context).load(RetrofitHelper.BASE_URL + reply.getImageUrl())
                     .apply(RequestOptions.circleCropTransform())
                     .into(holder.imageViewProfile);
-        }
+//        }
 
         holder.textViewProfile.setText(reply.getName());
         holder.expandableTextView.setText(reply.getContent(), TextView.BufferType.NORMAL);
@@ -68,6 +77,7 @@ public class DiscussionSeeAllRecyclerViewAdapter extends RecyclerView.Adapter<Di
         ImageView imageViewProfile;
         TextView textViewProfile, textViewTime;
         ExpandableTextView expandableTextView;
+
 
         public Holder(View view) {
             super(view);

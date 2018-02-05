@@ -8,6 +8,7 @@ import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import com.immymemine.kevin.skillshare.model.m_class.Project;
 import com.immymemine.kevin.skillshare.model.m_class.RelatedClass;
 import com.immymemine.kevin.skillshare.model.m_class.Review;
 import com.immymemine.kevin.skillshare.model.m_class.Subscriber;
+import com.immymemine.kevin.skillshare.model.see_all.SeeAll;
 import com.immymemine.kevin.skillshare.network.RetrofitHelper;
 import com.immymemine.kevin.skillshare.network.api.ClassService;
 import com.immymemine.kevin.skillshare.utility.ConstantUtil;
@@ -113,6 +115,19 @@ public class AboutFragment extends Fragment {
 
         projectAdapter.update(projects); // <<< data 전달 & notifyDataSetChanged
 
+
+        String a = "SEO Today: Strategies to Earn Trust, Rank High, and Stand Out";
+
+        textViewProjectSeeAll.setOnClickListener(view -> {
+            Intent intent = new Intent(context, SeeAllActivity.class);
+            intent.putExtra(ConstantUtil.SEE_ALL_FLAG, ConstantUtil.PROJECT_ITEM);
+//            intent.putExtra(ConstantUtil.ID_FLAG, classId);
+            intent.putExtra("a",a);
+
+            context.startActivity(intent);
+
+        });
+
         // review
         List<Review> reviews = about.getReviews();
         int size = reviews.size();
@@ -129,7 +144,8 @@ public class AboutFragment extends Fragment {
                 Intent intent = new Intent(context, SeeAllActivity.class);
                 intent.putExtra(ConstantUtil.SEE_ALL_FLAG, ConstantUtil.REVIEW_ITEM);
                 intent.putExtra(ConstantUtil.ID_FLAG, classId);
-                intent.putParcelableArrayListExtra(ConstantUtil.REVIEWS_FLAG, (ArrayList<? extends Parcelable>) reviews);
+                intent.putParcelableArrayListExtra(ConstantUtil.REVIEWS_FLAG, (ArrayList<? extends Parcelable>) reviews); // 굳이?
+                Log.e("Parcelable reviews","check ======= "+ reviews);
                 context.startActivity(intent);
             });
         } else {
@@ -149,7 +165,7 @@ public class AboutFragment extends Fragment {
                 intent.putExtra(ConstantUtil.SEE_ALL_FLAG, ConstantUtil.SUBSCRIBER_ITEM);
                 intent.putExtra(ConstantUtil.ID_FLAG, classId);
                 intent.putExtra(ConstantUtil.TOOLBAR_TITLE_FLAG, textViewSubscriberNum.getText().toString());
-                intent.putParcelableArrayListExtra(ConstantUtil.SUBSCRIBERS_FLAG, (ArrayList<? extends Parcelable>) subscribers);
+                intent.putParcelableArrayListExtra(ConstantUtil.SUBSCRIBERS_FLAG, (ArrayList<? extends Parcelable>) subscribers); // 굳이? 어차피 seeAll에서 한번 통신을 해야하는데?
                 context.startActivity(intent);
             });
         } else

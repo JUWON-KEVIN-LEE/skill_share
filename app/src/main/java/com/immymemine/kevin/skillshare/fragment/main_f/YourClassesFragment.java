@@ -2,6 +2,7 @@ package com.immymemine.kevin.skillshare.fragment.main_f;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.immymemine.kevin.skillshare.R;
+import com.immymemine.kevin.skillshare.activity.SavedActivity;
 import com.immymemine.kevin.skillshare.model.user.SubscribedClass;
 import com.immymemine.kevin.skillshare.model.user.User;
 import com.immymemine.kevin.skillshare.utility.StateUtil;
@@ -28,12 +30,15 @@ public class YourClassesFragment extends Fragment {
 
     TextView textViewSubscribedCount;
     ImageView imageViewThumbnail;
-
+    StateUtil state;
+    User user;
+    List<SubscribedClass> subscribedClasses;
+    Intent intent;
+    int size;
 
     public YourClassesFragment() {
         // Required empty public constructor
     }
-
 
 
     @Override
@@ -48,31 +53,45 @@ public class YourClassesFragment extends Fragment {
         imageViewThumbnail = view.findViewById(R.id.image_view_profile);
 
 
-        StateUtil state = StateUtil.getInstance();
-        if(state.getState()) {
-            User user = state.getUserInstance();
-            if(user.getSubscribedClasses() != null) {
-                List<SubscribedClass> subscribedClasses = user.getSubscribedClasses();
-                int size = subscribedClasses.size();
-                textViewSubscribedCount.setText(size + " Classes");
-                Glide.with(context).load(subscribedClasses.get(size-1).getImageUrl())
-                        .apply(RequestOptions.centerCropTransform())
-                        .into(imageViewThumbnail);
-
-//                imageViewThumbnail.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        Intent intent = new Intent(context, SavedActivity.class);
-//                        startActivity(intent);
-//                    }
-//                });
-            }
-        }
-
+        dataSetting();
 
 
         return view;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        dataSetting();
+
+
+    }
+
+    public void dataSetting() {
+        state = StateUtil.getInstance();
+        if (state.getState()) {
+            user = state.getUserInstance();
+            if (user.getSubscribedClasses() != null) {
+                subscribedClasses = user.getSubscribedClasses();
+                size = subscribedClasses.size();
+                textViewSubscribedCount.setText(size + " Classes");
+                if (subscribedClasses.size() != 0) {
+                    Glide.with(context).load(subscribedClasses.get(size - 1).getImageUrl())
+                            .apply(RequestOptions.centerCropTransform())
+                            .into(imageViewThumbnail);
+                }
+
+                imageViewThumbnail.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        intent = new Intent(context, SavedActivity.class);
+                        startActivity(intent);
+                    }
+                });
+            }
+        }
+    }
+
 
     public void clickDownload(View view) {
         // download page //

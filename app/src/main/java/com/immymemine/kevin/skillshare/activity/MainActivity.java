@@ -7,9 +7,11 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.ProgressBar;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
@@ -98,15 +100,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    List<Fragment> fragments = new ArrayList<>();
-    int stack = 0;
-
-    HomeFragment homeFragment;
-    GroupFragment groupFragment;
-    DiscoverFragment discoverFragment;
-    YourClassesFragment yourClassesFragment;
-    MeFragment meFragment;
-    OfflineMeFragment offlineMeFragment;
 
     private void initiateView() {
         progressBar = findViewById(R.id.progress_bar);
@@ -146,206 +139,50 @@ public class MainActivity extends AppCompatActivity {
         // Customize notification (title, background, typeface)
         bottomNavigation.setNotificationBackgroundColor(getResources().getColor(R.color.BottomNaviNotiBackground));
 
-        bottomNavigation.setOnTabSelectedListener((int position, boolean wasSelected) -> {
-            switch (position) {
-                case 0:
-                    if (wasSelected) {
-                        Log.d("JUWONLEE", "0 was selected");
-                        return false;
-                    } else {
-                        if(homeFragment == null) {
-                            Log.d("JUWONLEE", "0 null");
-                            homeFragment = new HomeFragment();
 
-                            fragments.add(homeFragment);
-
-                            getSupportFragmentManager()
-                                    .beginTransaction()
-                                    .add(R.id.fragment_container, homeFragment)
-                                    .commit();
-
-                            stack = fragments.indexOf(homeFragment);
-                        } else if(fragments.contains(homeFragment)) {
-                            Log.d("JUWONLEE", "0 contains");
-                            getSupportFragmentManager()
-                                    .beginTransaction()
-                                    .hide(fragments.get(stack))
-                                    .show(homeFragment)
-                                    .commit();
-
-                            stack = fragments.indexOf(homeFragment);
-                        } else {
-                            Log.d("JUWONLEE", "0 else");
-                            getSupportFragmentManager()
-                                    .beginTransaction()
-                                    .hide(fragments.get(stack))
-                                    .show(homeFragment)
-                                    .commit();
-
-                            stack = fragments.indexOf(homeFragment);
-                        }
+        bottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
+            @Override
+            public boolean onTabSelected(int position, boolean wasSelected) {
+                switch (position) {
+                    case 0:
+                        if (wasSelected) {
+                            return false;
+                        } else
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
                         return true;
-                    }
-                case 1:
-                    if (wasSelected) {
-                        return false;
-                    } else {
-                        if(groupFragment == null) {
-                            Log.d("JUWONLEE", "1 null");
-                            groupFragment = new GroupFragment();
 
-                            fragments.add(groupFragment);
-
-                            getSupportFragmentManager()
-                                    .beginTransaction()
-                                    .hide(fragments.get(stack))
-                                    .add(R.id.fragment_container, groupFragment)
-                                    .commit();
-
-                            stack = fragments.indexOf(groupFragment);
-                        } else if(!fragments.contains(groupFragment)) {
-                            Log.d("JUWONLEE", "1 not contains");
-                            fragments.add(groupFragment);
-
-                            getSupportFragmentManager()
-                                    .beginTransaction()
-                                    .hide(fragments.get(stack))
-                                    .add(R.id.fragment_container, groupFragment)
-                                    .commit();
-
-                            stack = fragments.indexOf(groupFragment);
-                        } else {
-                            Log.d("JUWONLEE", "1 else");
-                            getSupportFragmentManager()
-                                    .beginTransaction()
-                                    .hide(fragments.get(stack))
-                                    .show(groupFragment)
-                                    .commit();
-
-                            stack = fragments.indexOf(groupFragment);
-                        }
+                    case 1:
+                        if (wasSelected) {
+                            return false;
+                        } else
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new GroupFragment()).commit();
                         return true;
-                    }
-                case 2:
-                    if (wasSelected) {
-                        return false;
-                    } else {
-                        if(discoverFragment == null) {
-                            Log.d("JUWONLEE", "2 null");
-                            discoverFragment = new DiscoverFragment();
-
-                            fragments.add(discoverFragment);
-
-                            getSupportFragmentManager()
-                                    .beginTransaction()
-                                    .hide(fragments.get(stack))
-                                    .add(R.id.fragment_container, discoverFragment)
-                                    .commit();
-
-                            stack = fragments.indexOf(discoverFragment);
-                        } else {
-                            Log.d("JUWONLEE", "2 else");
-
-                            getSupportFragmentManager()
-                                    .beginTransaction()
-                                    .hide(fragments.get(stack))
-                                    .show(discoverFragment)
-                                    .commit();
-
-                            stack = fragments.indexOf(discoverFragment);
-                        }
+                    case 2:
+                        if (wasSelected) {
+                            return false;
+                        } else
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DiscoverFragment()).commit();
                         return true;
-                    }
-                case 3:
-                    if (wasSelected) {
-                        return false;
-                    } else {
-                        if(yourClassesFragment == null) {
-                            Log.d("JUWONLEE", "3 null");
-
-                            yourClassesFragment = new YourClassesFragment();
-
-                            fragments.add(yourClassesFragment);
-
-                            getSupportFragmentManager()
-                                    .beginTransaction()
-                                    .hide(fragments.get(stack))
-                                    .add(R.id.fragment_container, yourClassesFragment)
-                                    .commit();
-
-                            stack = fragments.indexOf(discoverFragment);
-                        } else {
-                            Log.d("JUWONLEE", "3 else");
-
-                            getSupportFragmentManager()
-                                    .beginTransaction()
-                                    .hide(fragments.get(stack))
-                                    .show(yourClassesFragment)
-                                    .commit();
-
-                            stack = fragments.indexOf(yourClassesFragment);
-                        }
-
+                    case 3:
+                        if (wasSelected) {
+                            return false;
+                        } else
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new YourClassesFragment()).commit();
                         return true;
-                    }
-                case 4:
-                    if (wasSelected) {
-                        return false;
-                    } else {
-                        if(stateUtil.getState()) {
-                            if(meFragment == null) {
-                                meFragment = new MeFragment();
-
-                                fragments.add(meFragment);
-
-                                getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .hide(fragments.get(stack))
-                                        .add(R.id.fragment_container, meFragment)
-                                        .commit();
-
-                                stack = fragments.indexOf(meFragment);
-                            } else {
-                                getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .hide(fragments.get(stack))
-                                        .show(meFragment)
-                                        .commit();
-
-                                stack = fragments.indexOf(meFragment);
-                            }
-
-                        } else {
-                            if(offlineMeFragment == null) {
-                                offlineMeFragment = new OfflineMeFragment();
-
-                                fragments.add(offlineMeFragment);
-
-                                getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .hide(fragments.get(stack))
-                                        .add(R.id.fragment_container, offlineMeFragment)
-                                        .commit();
-
-                                stack = fragments.indexOf(offlineMeFragment);
-                            } else {
-                                getSupportFragmentManager()
-                                        .beginTransaction()
-                                        .hide(fragments.get(stack))
-                                        .show(offlineMeFragment)
-                                        .commit();
-
-                                stack = fragments.indexOf(offlineMeFragment);
-                            }
-                        }
+                    case 4:
+                        if (wasSelected) {
+                            return false;
+                        } else if (stateUtil.getState())
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MeFragment()).commit();
+                        else
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new OfflineMeFragment()).commit();
                         return true;
-                    }
+
+                }
+                return false;
             }
-            return false;
         });
 
-        // Set current item programmatically
-        bottomNavigation.setCurrentItem(0);
     }
 
     // Broad Cast Receiver
@@ -365,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startRegisterService() {
-        if(stateUtil.getState()) {
+        if (stateUtil.getState()) {
             Intent intent = new Intent(this, RegistrationIntentService.class);
             intent.putExtra("USER_ID", stateUtil.getUserInstance().get_id());
             startService(intent);
@@ -392,10 +229,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d("JUWONLEE","MainActivity result");
+        Log.d("JUWONLEE", "MainActivity result");
         if (resultCode == RESULT_OK) {
-            Log.d("JUWONLEE","MainActivity result ok");
-            if(requestCode == ConstantUtil.INIT_SKILLS_REQUEST_CODE) {
+            Log.d("JUWONLEE", "MainActivity result ok");
+            if (requestCode == ConstantUtil.INIT_SKILLS_REQUEST_CODE) {
                 List<String> skills = data.getStringArrayListExtra(ConstantUtil.SKILLS_FLAG);
 
                 RetrofitHelper.createApi(UserService.class)
@@ -404,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 (Response response) -> {
-                                    if(ConstantUtil.SUCCESS.equals(response.getResult())) {
+                                    if (ConstantUtil.SUCCESS.equals(response.getResult())) {
                                         user.setFollowingSkills(skills);
                                     }
                                 }, (Throwable error) -> {

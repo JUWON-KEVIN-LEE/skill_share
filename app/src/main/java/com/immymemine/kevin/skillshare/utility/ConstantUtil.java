@@ -31,17 +31,19 @@ public class ConstantUtil {
     public static final int NO_ITEM = -9;
 
     // see all item
+    public static final String HOMEITEM_FLAG = "home item";
     public static final String CLASS_ITEM = "See All Class";
     public static final String PROJECT_ITEM = "See All Project";
     public static final String SUBSCRIBER_ITEM = "See All Subscriber";
     public static final String REVIEW_ITEM = "See All Review";
     public static final String DISCUSSION_ITEM = "Discussion";
 
-    public static final String FEATURED_ON_SKILLSHARE = "f";
-    public static final String TRENDING_NOW = "t";
-    public static final String BEST_THIS_MONTH = "b";
+//    public static final String FEATURED_ON_SKILLSHARE = "f";
+//    public static final String TRENDING_NOW = "t";
+//    public static final String BEST_THIS_MONTH = "b";
 
     // intent flag
+    public static final String CLASS_TITLE = "classTitle";
     public static final String USER_ID_FLAG = "user id";
     public static final String USER_NAME_FLAG = "user name";
     public static final String TOOLBAR_TITLE_FLAG = "ttf";
@@ -58,6 +60,9 @@ public class ConstantUtil {
     public static final String PROJECTS_FLAG = "projects";
     public static final int GALLERY_REQUEST_CODE = 392;
     public static final String AUTHORIZATION_FLAG = "authorization";
+    public static final int GALLERY_REQUEST_CODE_FROM_DIALOG = 222;
+
+
     //Search
     public static final int FAIL_SEARCH = 293;
 
@@ -65,10 +70,8 @@ public class ConstantUtil {
     public static final int ALREADY_JOIN_GROUP = 590;
 
     public static final int REQ_CODE = 999;
-//    public static final String permissions[] = {
-//            Manifest.permission.READ_EXTERNAL_STORAGE,
-//            Manifest.permission.WRITE_EXTERNAL_STORAGE
-//    };
+
+    public static final String TUTOR_CHECK = "T";
 
 
 }

@@ -8,8 +8,7 @@ import java.util.List;
  * Created by quf93 on 2017-11-29.
  */
 
-public class User
-{
+public class User {
     private List<SubscribedClass> subscribedClasses;
 
     private List<Discussion> discussion;
@@ -46,6 +45,16 @@ public class User
 
     private List<Group> groups;
 
+//    private List<TeachingClass> teachingClasses;
+
+//    public List<TeachingClass> getTeachingClasses() {
+//        return teachingClasses;
+//    }
+//
+//    public void setTeachingClasses(List<TeachingClass> teachingClasses) {
+//        this.teachingClasses = teachingClasses;
+//    }
+
     public List<SubscribedClass> getSubscribedClasses() {
         return subscribedClasses;
     }
@@ -54,63 +63,51 @@ public class User
         this.subscribedClasses = subscribedClasses;
     }
 
-    public String getRegistrationId ()
-    {
+    public String getRegistrationId() {
         return registrationId;
     }
 
-    public void setRegistrationId (String registrationId)
-    {
+    public void setRegistrationId(String registrationId) {
         this.registrationId = registrationId;
     }
 
-    public String getNickname ()
-    {
+    public String getNickname() {
         return nickname;
     }
 
-    public void setNickname (String nickname)
-    {
+    public void setNickname(String nickname) {
         this.nickname = nickname;
     }
 
-    public String getPassword ()
-    {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword (String password)
-    {
+    public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getImageUrl ()
-    {
+    public String getImageUrl() {
         return imageUrl;
     }
 
-    public void setImageUrl (String imageUrl)
-    {
+    public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
 
-    public String getEmail ()
-    {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail (String email)
-    {
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getName ()
-    {
+    public String getName() {
         return name;
     }
 
-    public void setName (String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -163,8 +160,7 @@ public class User
     }
 
     @Override
-    public String toString()
-    {
-        return "ClassPojo [subsribedClasses = "+subscribedClasses+", discussion = "+discussion+", registrationId = "+registrationId+", nickname = "+nickname+", password = "+password+", project = "+project+", following = "+following+", followers = "+followers+", imageUrl = "+imageUrl+", email = "+email+", userId = "+_id+", name = "+name+", followingSkills = "+followingSkills+", groups = "+groups+"]";
+    public String toString() {
+        return "ClassPojo [subsribedClasses = " + subscribedClasses + ", discussion = " + discussion + ", registrationId = " + registrationId + ", nickname = " + nickname + ", password = " + password + ", project = " + project + ", following = " + following + ", followers = " + followers + ", imageUrl = " + imageUrl + ", email = " + email + ", userId = " + _id + ", name = " + name + ", followingSkills = " + followingSkills + ", groups = " + groups + "]";
     }
 }

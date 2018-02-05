@@ -71,7 +71,7 @@ public class DiscussionsAdapter extends RecyclerView.Adapter<DiscussionsAdapter.
 
     @Override
     public int getItemViewType(int position) {
-        if(discussions == null)
+        if (discussions == null)
             return ConstantUtil.NO_ITEM;
         else
             return super.getItemViewType(position);
@@ -91,7 +91,7 @@ public class DiscussionsAdapter extends RecyclerView.Adapter<DiscussionsAdapter.
 
     @Override
     public void onBindViewHolder(Holder holder, int position) {
-        if(discussions != null) {
+        if (discussions != null) {
             Discussion discussion = discussions.get(position);
             // identifier
             holder.discussionId = discussion.get_id();
@@ -99,12 +99,14 @@ public class DiscussionsAdapter extends RecyclerView.Adapter<DiscussionsAdapter.
             holder.position = position;
 
             // profile
-            if(discussion.getImageUrl() != null) {
-                holder.imageUrl = discussion.getImageUrl();
-                Glide.with(context).load(holder.imageUrl)
-                        .apply(RequestOptions.circleCropTransform())
-                        .into(holder.imageViewProfile);
-            }
+
+//            if (RetrofitHelper.BASE_URL + discussion.getImageUrl() != null) {
+            Glide.with(context).load(RetrofitHelper.BASE_URL + discussion.getImageUrl())
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(holder.imageViewProfile);
+//            }
+            Log.e("onBindViewHolder", "check discussionImageUrl" + discussion.getImageUrl());
+
             holder.textViewProfile.setText(discussion.getName());
 
             // content
@@ -112,20 +114,20 @@ public class DiscussionsAdapter extends RecyclerView.Adapter<DiscussionsAdapter.
 
             // time
             holder.time = discussion.getTime();
-            holder.textViewTime.setText( TimeUtil.calculateTime(holder.time) );
+            holder.textViewTime.setText(TimeUtil.calculateTime(holder.time));
 
             // like
-            if(StateUtil.getInstance().getState()) {
-                if(discussion.getLikeUsersIds() != null && discussion.getLikeUsersIds().size() != 0) {
+            if (StateUtil.getInstance().getState()) {
+                if (discussion.getLikeUsersIds() != null && discussion.getLikeUsersIds().size() != 0) {
                     String userId = StateUtil.getInstance().getUserInstance().get_id();
-                    if(discussion.getLikeUsersIds().contains(userId))
+                    if (discussion.getLikeUsersIds().contains(userId))
                         holder.imageButtonLike.setChecked(true);
                 }
 
                 User user = StateUtil.getInstance().getUserInstance();
                 holder.imageButtonLike.setOnCheckedChangeListener(
                         (buttonView, isChecked) -> {
-                            if(isChecked) {
+                            if (isChecked) {
                                 RetrofitHelper.createApi(ClassService.class)
                                         .like(new LikeRequestBody(holder.discussionId, user.get_id(), user.getName(), holder.resId))
                                         .subscribeOn(Schedulers.io())
@@ -167,7 +169,7 @@ public class DiscussionsAdapter extends RecyclerView.Adapter<DiscussionsAdapter.
             holder.textViewLikeCount.setText(discussion.getLikeCount());
 
             // reply
-            if( discussion.getReplies() != null ) {
+            if (discussion.getReplies() != null) {
                 holder.setReply(discussion.getReplies());
             } else
                 holder.setReply(new ArrayList<>());
@@ -176,7 +178,7 @@ public class DiscussionsAdapter extends RecyclerView.Adapter<DiscussionsAdapter.
 
     @Override
     public int getItemCount() {
-        if(discussions==null)
+        if (discussions == null)
             return 1;
         return discussions.size();
     }
@@ -202,11 +204,12 @@ public class DiscussionsAdapter extends RecyclerView.Adapter<DiscussionsAdapter.
         ToggleImageButton imageButtonLike;
         TextView textViewLikeCount;
 
-        String imageUrl;
+        Reply reply;
+
 
         public Holder(View v) {
             super(v);
-            if(discussions != null) {
+            if (discussions != null) {
                 // profile
                 imageViewProfile = v.findViewById(R.id.image_view_profile);
                 imageViewProfile.setOnClickListener(view -> {
@@ -222,7 +225,7 @@ public class DiscussionsAdapter extends RecyclerView.Adapter<DiscussionsAdapter.
 
                 // info / reply
                 imageButtonReply = v.findViewById(R.id.image_button_reply);
-                imageButtonReply.setOnClickListener(this);
+                imageButtonReply.setOnClickListener(this); // 클릭시 seeAllActivity로 이동함.
 
                 textViewTime = v.findViewById(R.id.text_view_time);
                 // like
@@ -242,31 +245,34 @@ public class DiscussionsAdapter extends RecyclerView.Adapter<DiscussionsAdapter.
         ImageView imageViewReplyProfile;
         ExpandableTextView expandableTextViewReply;
 
+
         public void setReply(List<Reply> replies) {
 
             this.replies = replies;
 
-            if(replies != null && replies.size() != 0) {
+            if (replies != null && replies.size() != 0) {
                 textViewReplyProfile.setVisibility(View.VISIBLE);
                 textViewTimeReply.setVisibility(View.VISIBLE);
                 imageViewReplyProfile.setVisibility(View.VISIBLE);
                 expandableTextViewReply.setVisibility(View.VISIBLE);
 
                 int size = replies.size();
-                if( size >= 2 ) {
+                if (size >= 2) {
                     textViewReplies.setText("See all " + replies.size() + " replies");
                     textViewReplies.setVisibility(View.VISIBLE);
                     textViewReplies.setOnClickListener(this);
                 }
 
-                Reply reply = replies.get(replies.size()-1);
+                reply = replies.get(replies.size() - 1);
                 textViewReplyProfile.setText(reply.getName());
-                textViewTimeReply.setText( TimeUtil.calculateTime(reply.getTime()) );
+                textViewTimeReply.setText(TimeUtil.calculateTime(reply.getTime()));
 
-                if(reply.getImageUrl() != null)
-                    Glide.with(context).load(reply.getImageUrl())
-                            .apply(RequestOptions.circleCropTransform())
-                            .into(imageViewReplyProfile);
+
+//                if (reply.getImageUrl() != null)
+                Glide.with(context).load(RetrofitHelper.BASE_URL + reply.getImageUrl())
+                        .apply(RequestOptions.circleCropTransform())
+                        .into(imageViewReplyProfile);
+                Log.e("setReply", "check replyImageUrl" + reply.getImageUrl());
 
                 expandableTextViewReply.setTrimLength(4);
                 expandableTextViewReply.setText(reply.getContent(), TextView.BufferType.NORMAL);
@@ -281,21 +287,23 @@ public class DiscussionsAdapter extends RecyclerView.Adapter<DiscussionsAdapter.
 
         @Override
         public void onClick(View v) {
+
             Intent intent = new Intent(context, SeeAllActivity.class);
             intent.putExtra(ConstantUtil.SEE_ALL_FLAG, ConstantUtil.DISCUSSION_ITEM);
             intent.putExtra(ConstantUtil.ID_FLAG, discussionId);
             intent.putExtra("position", position);
+
             intent.putExtra(ConstantUtil.TOOLBAR_TITLE_FLAG, replies.size() + " Replies");
 
             Collections.reverse(replies);
 
-            Reply reply = new Reply(
+            Reply newReply = new Reply(
                     textViewProfile.getText().toString(),
-                    imageUrl,
+                    reply.getImageUrl(),
                     expandableTextView.getText().toString(),
                     time);
 
-            replies.add(0, reply);
+            replies.add(0, newReply);
 
             intent.putParcelableArrayListExtra(ConstantUtil.DISCUSSION_ITEM, (ArrayList) replies);
             context.startActivity(intent);

@@ -39,7 +39,7 @@
     </android.support.v7.widget.Toolbar>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view_see_all"
+        android:id="@+id/recycler_view_discussion_see_all"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"

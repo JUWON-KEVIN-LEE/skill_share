@@ -41,6 +41,8 @@ public class HomeFragment extends Fragment {
     FrameLayout welcomeViewContainer;
     View welcomeView;
 
+    Map<String, List<Class>> addFollowSkills;
+    List<String> followSkills;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -73,11 +75,12 @@ public class HomeFragment extends Fragment {
             welcomeViewContainer.setVisibility(View.GONE);
         }
 
-        List<String> followSkills;
+
 
         if(StateUtil.getInstance().getState()) {
             if(StateUtil.getInstance().getUserInstance().getFollowingSkills() != null) {
                 followSkills = StateUtil.getInstance().getUserInstance().getFollowingSkills();
+
             } else {
                 followSkills = new ArrayList<>();
             }

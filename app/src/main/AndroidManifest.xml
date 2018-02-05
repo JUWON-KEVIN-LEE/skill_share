@@ -11,9 +11,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-
-
-
     <!-- icon 변경 -->
     <application
         android:allowBackup="true"
@@ -44,6 +41,9 @@
         <activity android:name=".activity.SearchActivity" />
         <activity android:name=".activity.GroupActivity" />
         <activity android:name=".activity.ProfileActivity" />
+
+        <!-- saved Activity -->
+        <activity android:name=".activity.SavedActivity"/>
 
         <!-- gcm receiver -->
         <receiver
